@@ -128,9 +128,5 @@ Realizada a análise dos requisitos e o estudo de viabilização de uma nova top
 
 Para contribuir com o projeto, por favor, abra uma issue ou envie um pull request.
 
-## Licença
-
-Este projeto está sob a licença [MIT](LICENSE).
-
 ---
 
