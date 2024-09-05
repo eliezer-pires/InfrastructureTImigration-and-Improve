@@ -71,6 +71,59 @@ Realizada a análise dos requisitos e o estudo de viabilização de uma nova top
 
 ![Nova Topologia Física de Redes](imagens/ProjetoGithub-10-FW-NewNetSV.jpg)
 
+Além desta topologia física da infraestrutura, é de suma importância detalharmos a **Server Cloud** representada na imagem anterior, que é realizada pelo Cluster gerenciado pelo Proxmox.
+
+**Imagem da Nova Topologia de Servidores:**
+
+![Nova Topologia de Servidores](imagens/ServerNew.jpg)
+
+### 3.1 Camada CORE da Topologia
+
+A topologia da camada CORE é essencial, pois é responsável pela entrada para a rede interna (LANs) e pela saída para as redes externas (Intranet e Internet). É nesta camada que ocorre todo o roteamento, seja entre as VLANs, seja para redes externas.
+
+Além disso, a camada CORE desempenha um papel crucial na segurança da informação. Através do Firewall, são aplicados filtros, e as Access Lists direcionam o tráfego apenas para os destinos necessários.
+
+**Imagem da Camada CORE:**
+
+![Camada CORE da Topologia](imagens/NewCore.jpg)
+
+### 3.2 Camada de DISTRIBUIÇÃO da Topologia
+
+Nesta camada da topologia física, serão estabelecidos links redundantes entre todos os switches de distribuição e entre os switches CORE, utilizando a tecnologia **Etherchannel**. Essa tecnologia permite redundância de link e agregação de link, aumentando a banda de transferência para 2 Gbps entre os switches.
+
+Além disso, será necessário implementar o **Spanning-Tree**, uma tecnologia utilizada para evitar loops nos links redundantes e para estabelecer o caminho mais curto para o destino em layer 2. Foi realizada uma análise minuciosa de cada VLAN para definir as topologias lógicas e os caminhos prioritários.
+
+Serão também implementadas tecnologias de segurança da informação, como **Port-Security** para controle dos dispositivos conectados, além de medidas contra **DHCP Snooping**, **Dynamic ARP Inspection**, e outras.
+
+**Imagem da Camada de DISTRIBUIÇÃO:**
+
+![Camada de DISTRIBUIÇÃO da Topologia](imagens/NewDistribuicao.jpg)
+
+### 3.3 Camada de ACESSO da Topologia
+
+A camada de acesso é a camada onde são conectados os dispositivos finais. Nossa rede possui diversos tipos de dispositivos finais, incluindo:
+
+- Computadores
+- Notebooks
+- Impressoras
+- Telefones IP Cisco
+- Centrais de Áudio
+- Central de Gravação de Áudio
+- Rádios 
+- Outros dispositivos
+
+**Imagem da Camada de ACESSO:**
+
+![Camada de ACESSO da Topologia](imagens/NewAcesso.jpg)
+
+Grande parte dos switches de acesso são conectados a pelo menos dois outros switches da camada de distribuição. Dessa forma, caso algum switch de distribuição ou link entre eles se rompa, outro link poderá assumir a função. Para isso, é essencial que o **Spanning-Tree** e o **Etherchannel** estejam corretamente configurados entre esses switches.
+
+A conexão entre os switches de acesso e os dispositivos finais é configurada especificamente nas VLANs necessárias, e o **Port-Security** será implementado para controle dos dispositivos conectados em toda a infraestrutura.
+
+Para que esta topologia física seja implementada, diversas análises e novas tecnologias deverão ser introduzidas. Estas serão citadas, explicadas e implementadas a seguir.
+
+PAREI AQUI
+
 ## 4. Status Atual das Implementações
 
 ### Redes
@@ -115,18 +168,12 @@ Realizada a análise dos requisitos e o estudo de viabilização de uma nova top
 
 ## 5. Próximos Passos
 
-- **Ações Faltantes:**  
-  - Concluir as pendências relacionadas às ACLs, Bacula, migração do Active Directory, entre outros.
-  
-- **Testes e Validação:**  
-  - Realizar testes de segurança na camada 2 e validar o script de segurança de VLANs.
-
-- **Documentação e Publicação:**  
-  - Finalizar a documentação técnica do projeto e preparar sua publicação no GitHub e LinkedIn para compartilhamento das melhores práticas e resultados.
+- **Ações Faltantes:** Concluir as pendências relacionadas às ACLs, Bacula, migração do Active Directory, entre outros.
+- **Testes e Validação:** Realizar testes de segurança na camada 2 e validar o script de segurança de VLANs.
+- **Documentação e Publicação:** Finalizar a documentação técnica do projeto e preparar sua publicação no GitHub e LinkedIn.
 
 ## Contribuições
 
-Para contribuir com o projeto, por favor, abra uma issue ou envie um pull request.
+Para contribuir com o projeto, abra uma issue ou envie um pull request.
 
 ---
-
