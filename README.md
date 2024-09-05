@@ -75,7 +75,7 @@ Além desta topologia física da infraestrutura, é de suma importância detalha
 
 **Imagem da Nova Topologia de Servidores:**
 
-![Nova Topologia de Servidores](imagens/ServerNew.jpg)
+![Nova Topologia de Servidores](imagens/ServersNew.jpg)
 
 ### 3.1 Camada CORE da Topologia
 
