@@ -69,7 +69,7 @@ Realizada a análise dos requisitos e o estudo de viabilização de uma nova top
 - **Roxo com Duas Setas:** Rede SAN  
 - **Azul com Conexão Serial:** Túnel L2TP Xconnect  
 
-**Editando a Imagem da Topologia para fazer o Upload** PAREI AQUI
+![Nova Topologia Física de Redes](imagens/ProjetoGithub-10-FW-NewNetSV.jpg)
 
 ## 4. Status Atual das Implementações
 
