@@ -122,9 +122,28 @@ A conexão entre os switches de acesso e os dispositivos finais é configurada e
 
 Para que esta topologia física seja implementada, diversas análises e novas tecnologias deverão ser introduzidas. Estas serão citadas, explicadas e implementadas a seguir.
 
-PAREI AQUI
+## 4. Implementação da Nova Infraestrutura
 
-## 4. Status Atual das Implementações
+A implementação deste projeto começou em dezembro de 2021, e desde então enfrentamos diversas dificuldades, incluindo viagens, cursos, treinamentos, indisponibilidades administrativas e mudanças nas prioridades. Além disso, tivemos que ajustar a sequência de implementação e replanejar etapas ao longo do caminho. Apesar desses desafios, já realizamos várias mudanças e melhorias importantes.
+
+Em dezembro de 2023, estamos avançando em várias etapas de implementação. É importante notar que a sequência descrita a seguir não deve ser considerada a ordem exata de execução. A ordem correta para garantir o sucesso da implementação será detalhada nos tópicos a seguir.
+
+A implementação será dividida em seis grandes fases:
+
+1. **CORE da Topologia**
+2. **DISTRIBUIÇÃO da Topologia**
+3. **ACESSO da Topologia**
+4. **Implementações Gerais da Topologia**
+5. **Configurações de Redes nos Servidores**
+6. **Implementações Previstas para 2024**
+
+### 4.1 CORE da Topologia
+
+O primeiro passo foi alterar a entrega do **MPLS** da operadora para a Sala de Servidores, que funciona como o data center do prédio. Um chamado foi aberto junto à operadora para transportar o rack completo, contendo os equipamentos do MPLS, o roteador da Matriz e o roteador de borda do esquadrão, para essa nova localização.
+
+Foi necessário instalar um novo percurso de fibra óptica, já que não havia conexão prévia com a Sala de Servidores. Com isso, conseguimos centralizar os equipamentos de comunicação e otimizar o gerenciamento da infraestrutura de rede.
+
+## 5. Status Atual das Implementações
 
 ### Redes
 
@@ -166,7 +185,7 @@ PAREI AQUI
   - **VLAN Attacks Mitigation:** 50%
 - **FW ASA5550:** 0%
 
-## 5. Próximos Passos
+## 6. Próximos Passos
 
 - **Ações Faltantes:** Concluir as pendências relacionadas às ACLs, Bacula, migração do Active Directory, entre outros.
 - **Testes e Validação:** Realizar testes de segurança na camada 2 e validar o script de segurança de VLANs.
