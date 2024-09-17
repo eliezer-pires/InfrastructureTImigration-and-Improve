@@ -143,6 +143,16 @@ O primeiro passo foi alterar a entrega do **MPLS** da operadora para a Sala de S
 
 Foi necessário instalar um novo percurso de fibra óptica, já que não havia conexão prévia com a Sala de Servidores. Com isso, conseguimos centralizar os equipamentos de comunicação e otimizar o gerenciamento da infraestrutura de rede.
 
+**Imagem do Rack do MPLS:**
+
+![Rack do MPLS](imagens/RackMpls.jpg)
+
+Após essa mudança, foi implementado um firewall para bloquear todo o tráfego não autorizado, conforme as regras de segurança da empresa. Durante a implementação, surgiram desafios complexos, especialmente para liberar a comunicação de áudio via protocolo SIP. Foi necessário um estudo aprofundado dos protocolos envolvidos. No entanto, a equipe de redes e segurança superou as dificuldades, e o sistema foi implementado com sucesso, ficando 100% funcional.
+
+Foi implementado um switch Cisco C9200L como CORE da rede para melhorar o desempenho no roteamento interno. O roteamento entre sub-redes foi centralizado nesse switch, que atua como gateway para todas as redes internas. Já o roteamento para redes externas é direcionado ao roteador de borda, responsável por esse tráfego, otimizando a carga de processamento entre os dispositivos.
+
+Além disso, será adicionado um segundo switch Cisco C9200L (em processo de aquisição), formando uma redundância com o primeiro, incluindo a redundância de gateways por meio das tecnologias HSRP e VRRP. Entre os C9200L e os switches da camada de distribuição, será implementada a agregação de links para somar a banda disponível, garantindo também a redundância dos links via EtherChannel.
+
 ## 5. Status Atual das Implementações
 
 ### Redes
