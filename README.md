@@ -153,6 +153,74 @@ Foi implementado um switch Cisco C9200L como CORE da rede para melhorar o desemp
 
 Além disso, será adicionado um segundo switch Cisco C9200L (em processo de aquisição), formando uma redundância com o primeiro, incluindo a redundância de gateways por meio das tecnologias HSRP e VRRP. Entre os C9200L e os switches da camada de distribuição, será implementada a agregação de links para somar a banda disponível, garantindo também a redundância dos links via EtherChannel.
 
+Na implementação do switch CORE, foi necessário definir um novo endereçamento IP para todas as sub-redes, garantindo o funcionamento de todos os serviços. A Matriz forneceu a rede 192.168.36.0/22, com 1024 IPs disponíveis. Utilizamos o VLSM para dividir essa rede, resultando na seguinte tabela de endereçamento.
+
+### 4.1.a Endereçamento IP
+
+Dessa forma, iremos distribuir os endereços IP de modo que fiquem adequados à realidade da empresa.
+
+| REDE               | Máscara               | Serviços                | Gateway         | VLAN               |
+|--------------------|-----------------------|-------------------------|-----------------|--------------------|
+| 192.168.36.0 - 63  | /26 - 255.255.255.192  | Servidores              | 192.168.36.62    | 100 - SERVERS      |
+| 192.168.36.64 - 67 | /30 - 255.255.255.252  | WAN - FW-CME            | Nil             | Nil                |
+| 192.168.36.68 - 71 | /30 - 255.255.255.252  | CORE > CME              | -               | -                  |
+| 192.168.36.72 - 79 | /29 - 255.255.255.248  | Livre                   | -               | -                  |
+| 192.168.36.80 - 95 | /28 - 255.255.255.240  | Livre                   | -               | -                  |
+| 192.168.36.96 - 127| /27 - 255.255.255.224  | Livre                   | -               | -                  |
+| 192.168.36.128 - 255| /25 - 255.255.255.128 | Ativos                  | 192.168.36.199   | 200 - GERENCIAMENTO|
+| 192.168.37.0 - 255 | /24 - 255.255.255.0    | PCs                     | 192.168.37.254   | 400 - INTRANET     |
+| 192.168.38.0 - 127 | /25 - 255.255.255.128  | VoIP                    | 192.168.38.126   | 300 - VOICE        |
+| 192.168.38.128 - 191| /26 - 255.255.255.192 | Central de Áudio        | Nil             | 514 - WAN_KIT200   |
+| 192.168.38.192 - 255| /26 - 255.255.255.192 | Livre                   | -               | -                  |
+| 192.168.39.0 - 255 | /24 - 255.255.255.0    | Livre                   | -               | -                  |
+
+### 4.1.b VLANs
+
+Após realizar as análises de cada VLAN necessária à rede, a tabela final de VLANs ficou definida da seguinte forma:
+
+| VLAN  | NAME              | VLAN | NAME            |
+|-------|-------------------|------|-----------------|
+| 53    | SIST.FORNECEDOR    | 510  | CENTRAL.DE.AUDIO|
+| 100   | SERVERS            | 511  | CA_A            |
+| 104   | CLIENTE2           | 512  | CA_B            |
+| 200   | GERENCIAMENTO      | 513  | CA_TRANSITO     |
+| 300   | VOICE              | 514  | WAN_KIT.200     |
+| 400   | INTRANET           | 666  | BlackHole       |
+
+Essas VLANs serão configuradas manualmente nos switches, já que a tabela é pequena. O uso do VTP não é necessário, pois algumas VLANs serão aplicadas em poucos switches. Portanto, todos os switches serão configurados em **VTP mode transparent**. O gerenciamento das VLANs será documentado no NetBox.
+
+### 4.1.c Interfaces SVIs e Roteamento de VLANs
+
+As SVIs são configuradas no Switch CORE para realizar o roteamento entre as VLANs. É importante definir quais VLANs devem se comunicar entre si. Após análise, identificamos que as VLANs 100, 200, 300, 400, 511 e 514 precisam de comunicação mútua. Se for necessário restringir essa comunicação no futuro, isso pode ser feito por meio de ACLs.
+
+Configuração das SVIs:
+
+```bash
+interface Vlan 100
+ description SERVERS
+ ip address 192.168.36.62 255.255.255.192
+
+interface Vlan 200
+ description GERENCIAMENTO
+ ip address 192.168.36.199 255.255.255.128
+
+interface Vlan 300
+ description VOICE
+ ip address 192.168.38.126 255.255.255.128
+
+interface Vlan 400
+ description INTRANET
+ ip address 192.168.37.254 255.255.255.0
+
+interface Vlan 511
+ description CA_A
+ ip address 192.168.200.143 255.255.255.0
+
+interface Vlan 514
+ description ### WAN KIT 200 - CA ###
+ ip address 10.253.200.1 255.255.255.252
+
+
 ## 5. Status Atual das Implementações
 
 ### Redes
