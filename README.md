@@ -221,6 +221,46 @@ interface Vlan 514
  ip address 10.253.200.1 255.255.255.252
 ```
 
+### 4.1.d Interfaces do Roteador de Borda (CME)
+
+Para permitir que as redes se comuniquem com redes externas (INTRANET e Internet), serão necessárias as seguintes alterações nas configurações das interfaces do roteador de borda (CME).
+
+**Antes da migração:**
+- **Gi0/0 (LAN):** Contém as subinterfaces das VLANs. Na nova implementação, todas as subinterfaces serão removidas.
+- **Gi0/1 (WAN):** Conectado ao firewall com o IP 192.168.252.129/30.
+- **Gi0/2 (LAN):** Será conectada ao CORE.
+
+**Durante a migração:**
+- **Gi0/0 (WAN - FW):** Configurado com o IP 192.168.36.66/30.
+- **Gi0/1:** Configurado com o IP 192.168.36.69/30.
+- **Gi0/2 (LAN):** Sem IP, mas com subinterfaces:
+  - **Gi0/2.200:** 192.168.36.200/25 (GERENCIAMENTO).
+  - **Gi0/2.300:** 192.168.38.126/25 (VOICE).
+
+**Rotas:**
+- **ip route 0.0.0.0 0.0.0.0 Gi0/0** (rota padrão para a WAN).
+
+**Configurações de voz:**
+- **voice register global:** Configurar IP 192.168.38.126/25 (VOICE).
+- **telephony service secondary:** Configurar IP 192.168.36.200/25 (GERENCIAMENTO).
+
+### 4.2 Camada de DISTRIBUIÇÃO da Topologia
+
+Nesta camada, foi implementado o EtherChannel entre os switches, agregando duas interfaces gigabit Ethernet por switch, totalizando 2 Gbps de bandwidth e garantindo a redundância dos links.
+
+Além disso, essa camada é responsável por interligar, com links redundantes, diferentes redes operacionais, como Fornecedor, Cliente Externo 1 e 2, e a Central de Áudio.
+
+Foi realizada também uma reorganização dos ativos no Rack de Infraestrutura, preparando o ambiente para as grandes implementações futuras.
+
+**Imagem do Rack de Infraestrutura:**
+
+![Rack de Infraestrutura](imagens/Rack1.jpg)
+
+### 4.3 Camada de ACESSO da Topologia
+
+Nessa etapa, cada switch da camada de acesso deverá ser reconfigurado com as VLANs existentes de forma manual (sem VTP), atribuindo o IP e a máscara na interface SVI de gerenciamento. Os links para os switches de distribuição serão configurados como trunk, e os hostnames serão atualizados de acordo com a nova padronização definida em anexo. Além disso, o gateway padrão será ajustado para o novo endereço estabelecido no switch CORE.
+
+
 ## 5. Status Atual das Implementações
 
 ### Redes
