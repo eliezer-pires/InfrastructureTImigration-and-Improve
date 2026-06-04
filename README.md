@@ -266,48 +266,48 @@ Nessa etapa, cada switch da camada de acesso deverá ser reconfigurado com as VL
 ### Redes
 
 - **Mudança MPLS:** OK
-- **Nova Topologia Física:** 95%
+- **Nova Topologia Física:** 99%
 - **Endereçamento:** OK
 - **VLAN Nativa:** OK
 - **VLANs:** OK
-- **Trunks:** 95%
+- **Trunks:** 100%
 - **Inter-VLAN Routing:** OK
-- **STP:** 98%
-- **Etherchannel:** 95%
-- **ACLs:** 10%
+- **STP:** 100%
+- **Etherchannel:** 100%
+- **ACLs:** 70%
 
 ### Servidores/Storage
 
-- **Proxmox:** 70% (Cluster pendente)
-- **Netbox:** 90%
-- **Zabbix:** 90%
+- **Proxmox:** 90% (Cluster pendente)
+- **Netbox:** 100%
+- **Zabbix:** 100%
 - **Prometheus:** 100%
 - **InfluxDB:** 100%
-- **Grafana:** 70%
-- **Bacula:** 0%
-- **Web:** 90% (Revisão necessária)
+- **Grafana:** 100%
+- **Proxmox Backup Server:** 60%
+- **Web:** 100%
 - **DNS/DHCP:** 100% (Revisar produção no AD)
-- **Active Directory:** 80% (Migração para novo servidor pendente)
+- **Active Directory:** 100%
 - **WSUS:** 100%
-- **AD (SAMBA):** 0%
+- **AD (SAMBA):** 100%
 - **Syslog:** 0%
-- **TACACSGU:** 30%
+- **TACACSGUI:** 30%
 
 ### Segurança
 
 - **pfSense:** 100%
 - **Layer 2 Security:**
-  - **DHCP Snooping:** 50%
-  - **Dynamic ARP Inspection:** 50%
-  - **Port Security:** 0%
-  - **VLAN Attacks Mitigation:** 50%
+  - **DHCP Snooping:** 100%
+  - **Dynamic ARP Inspection:** 100%
+  - **Port Security:** 0% (Task suspensa pela Alta Direção)
+  - **VLAN Attacks Mitigation:** 100%
 - **FW ASA5550:** 0%
 
 ## 6. Próximos Passos
 
-- **Ações Faltantes:** Concluir as pendências relacionadas às ACLs, Bacula, migração do Active Directory, entre outros.
-- **Testes e Validação:** Realizar testes de segurança na camada 2 e validar o script de segurança de VLANs.
-- **Documentação e Publicação:** Finalizar a documentação técnica do projeto e preparar sua publicação no GitHub e LinkedIn.
+- **Ações Faltantes:** Nenhuma
+- **Testes e Validação:** 90%
+- **Documentação e Publicação:** 80% (trabalho contínuo de atualização)
 
 ## Contribuições
 
