@@ -10,7 +10,7 @@ Este projeto tem como objetivo realizar a migração e a melhoria completa da in
 
 - **Imagem da Topologia Física de Rede Atual:** A imagem ilustrará a topologia física de redes atual, destacando a configuração existente e os pontos críticos identificados antes da migração.
 
-![Topologia Física da Rede Atual](imagens/TopologiaInicialProjetoGitHub-Page-1.jpg)
+![Topologia Física da Rede Atual](architecture-diagrams/TopologiaInicialProjetoGitHub-Page-1.jpg)
 
 ### Problemas Identificados
 
@@ -24,13 +24,13 @@ Este projeto tem como objetivo realizar a migração e a melhoria completa da in
 
 **Imagem da Camada CORE:** 
 
-![Camada CORE](imagens/Core.png)
+![Camada CORE](architecture-diagrams/Core.png)
 
 ### Problemas Específicos - Camada de DISTRIBUIÇÃO
 
 - **Mistura de Funções entre Camadas de Distribuição e Acesso:** Não há uma distinção clara entre as camadas de Distribuição e Acesso, resultando em uma sobreposição de funções entre os switches. Além disso, a falta de redundância significa que todos os dispositivos dependem de um único switch (SW 221) para acessar redes externas. Para resolver essa situação, a topologia física e lógica será reorganizada.
 
-![Camada de Distribuição e Acesso](imagens/distribuicao-acesso.png)
+![Camada de Distribuição e Acesso](architecture-diagrams/distribuicao-acesso.png)
 
 - **Ausência de Spanning-Tree Adequado:** Não há implementação de um protocolo Spanning-Tree apropriado, o que aumenta o risco de loops na rede e impede a orientação eficiente do tráfego na camada 2.
 - **Falta de Segregação de VLANs:** Não existe segregação de VLANs para sub-redes de gerenciamento e servidores, criando uma vulnerabilidade na segurança da rede.
@@ -53,7 +53,7 @@ Este projeto tem como objetivo realizar a migração e a melhoria completa da in
 
 - Uma imagem será inserida para ilustrar a topologia atual dos servidores, destacando a estrutura de conexão e o layout de distribuição dos principais serviços e recursos.
 
-![Topologia Física de Servidores](imagens/ServersOLD.jpg)
+![Topologia Física de Servidores](architecture-diagrams/ServersOLD.jpg)
 
 ## 3. Design e Projeto da Nova Topologia Física
 
@@ -69,13 +69,13 @@ Realizada a análise dos requisitos e o estudo de viabilização de uma nova top
 - **Roxo com Duas Setas:** Rede SAN  
 - **Azul com Conexão Serial:** Túnel L2TP Xconnect  
 
-![Nova Topologia Física de Redes](imagens/ProjetoGithub-10-FW-NewNetSV.jpg)
+![Nova Topologia Física de Redes](architecture-diagrams/ProjetoGithub-10-FW-NewNetSV.jpg)
 
 Além desta topologia física da infraestrutura, é de suma importância detalharmos a **Server Cloud** representada na imagem anterior, que é realizada pelo Cluster gerenciado pelo Proxmox.
 
 **Imagem da Nova Topologia de Servidores:**
 
-![Nova Topologia de Servidores](imagens/ServersNew.jpg)
+![Nova Topologia de Servidores](architecture-diagrams/ServersNew.jpg)
 
 ### 3.1 Camada CORE da Topologia
 
@@ -85,7 +85,7 @@ Além disso, a camada CORE desempenha um papel crucial na segurança da informa�
 
 **Imagem da Camada CORE:**
 
-![Camada CORE da Topologia](imagens/NewCore.jpg)
+![Camada CORE da Topologia](architecture-diagrams/NewCore.jpg)
 
 ### 3.2 Camada de DISTRIBUIÇÃO da Topologia
 
@@ -97,7 +97,7 @@ Serão também implementadas tecnologias de segurança da informação, como **P
 
 **Imagem da Camada de DISTRIBUIÇÃO:**
 
-![Camada de DISTRIBUIÇÃO da Topologia](imagens/NewDistribuicao.jpg)
+![Camada de DISTRIBUIÇÃO da Topologia](architecture-diagrams/NewDistribuicao.jpg)
 
 ### 3.3 Camada de ACESSO da Topologia
 
@@ -114,7 +114,7 @@ A camada de acesso é a camada onde são conectados os dispositivos finais. Noss
 
 **Imagem da Camada de ACESSO:**
 
-![Camada de ACESSO da Topologia](imagens/NewAcesso.jpg)
+![Camada de ACESSO da Topologia](architecture-diagrams/NewAcesso.jpg)
 
 Grande parte dos switches de acesso são conectados a pelo menos dois outros switches da camada de distribuição. Dessa forma, caso algum switch de distribuição ou link entre eles se rompa, outro link poderá assumir a função. Para isso, é essencial que o **Spanning-Tree** e o **Etherchannel** estejam corretamente configurados entre esses switches.
 
@@ -145,7 +145,7 @@ Foi necessário instalar um novo percurso de fibra óptica, já que não havia c
 
 **Imagem do Rack do MPLS:**
 
-![Rack do MPLS](imagens/RackMpls.jpg)
+![Rack do MPLS](architecture-diagrams/RackMpls.jpg)
 
 Após essa mudança, foi implementado um firewall para bloquear todo o tráfego não autorizado, conforme as regras de segurança da empresa. Durante a implementação, surgiram desafios complexos, especialmente para liberar a comunicação de áudio via protocolo SIP. Foi necessário um estudo aprofundado dos protocolos envolvidos. No entanto, a equipe de redes e segurança superou as dificuldades, e o sistema foi implementado com sucesso, ficando 100% funcional.
 
@@ -254,7 +254,7 @@ Foi realizada também uma reorganização dos ativos no Rack de Infraestrutura, 
 
 **Imagem do Rack de Infraestrutura:**
 
-![Rack de Infraestrutura](imagens/Rack1.jpg)
+![Rack de Infraestrutura](architecture-diagrams/Rack1.jpg)
 
 ### 4.3 Camada de ACESSO da Topologia
 
@@ -266,48 +266,48 @@ Nessa etapa, cada switch da camada de acesso deverá ser reconfigurado com as VL
 ### Redes
 
 - **Mudança MPLS:** OK
-- **Nova Topologia Física:** 95%
+- **Nova Topologia Física:** 99%
 - **Endereçamento:** OK
 - **VLAN Nativa:** OK
 - **VLANs:** OK
-- **Trunks:** 95%
+- **Trunks:** 100%
 - **Inter-VLAN Routing:** OK
-- **STP:** 98%
-- **Etherchannel:** 95%
-- **ACLs:** 10%
+- **STP:** 100%
+- **Etherchannel:** 100%
+- **ACLs:** 70%
 
 ### Servidores/Storage
 
-- **Proxmox:** 70% (Cluster pendente)
-- **Netbox:** 90%
-- **Zabbix:** 90%
+- **Proxmox:** 90% (Cluster pendente)
+- **Netbox:** 100%
+- **Zabbix:** 100%
 - **Prometheus:** 100%
 - **InfluxDB:** 100%
-- **Grafana:** 70%
-- **Bacula:** 0%
-- **Web:** 90% (Revisão necessária)
+- **Grafana:** 100%
+- **Proxmox Backup Server:** 60%
+- **Web:** 100%
 - **DNS/DHCP:** 100% (Revisar produção no AD)
-- **Active Directory:** 80% (Migração para novo servidor pendente)
+- **Active Directory:** 100%
 - **WSUS:** 100%
-- **AD (SAMBA):** 0%
+- **AD (SAMBA):** 100%
 - **Syslog:** 0%
-- **TACACSGU:** 30%
+- **TACACSGUI:** 30%
 
 ### Segurança
 
 - **pfSense:** 100%
 - **Layer 2 Security:**
-  - **DHCP Snooping:** 50%
-  - **Dynamic ARP Inspection:** 50%
-  - **Port Security:** 0%
-  - **VLAN Attacks Mitigation:** 50%
+  - **DHCP Snooping:** 100%
+  - **Dynamic ARP Inspection:** 100%
+  - **Port Security:** 0% (Task suspensa pela Alta Direção)
+  - **VLAN Attacks Mitigation:** 100%
 - **FW ASA5550:** 0%
 
 ## 6. Próximos Passos
 
-- **Ações Faltantes:** Concluir as pendências relacionadas às ACLs, Bacula, migração do Active Directory, entre outros.
-- **Testes e Validação:** Realizar testes de segurança na camada 2 e validar o script de segurança de VLANs.
-- **Documentação e Publicação:** Finalizar a documentação técnica do projeto e preparar sua publicação no GitHub e LinkedIn.
+- **Ações Faltantes:** Nenhuma
+- **Testes e Validação:** 90%
+- **Documentação e Publicação:** 80% (trabalho contínuo de atualização)
 
 ## Contribuições
 
