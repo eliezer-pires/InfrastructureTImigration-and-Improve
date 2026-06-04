@@ -10,35 +10,32 @@ Com o objetivo de viabilizar a hospedagem pública e segura deste portfólio no 
 
 A infraestrutura lógica e física de rede foi projetada utilizando o modelo de três camadas da Cisco (Core, Distribuição e Acesso), integrado a uma borda WAN capaz de gerenciar serviços de telefonia IP (CME), tráfego de controle aéreo/telemetria e trânsito seguro de dados.
 
+# Updated Mermaid diagram with specific hostnames
 ```mermaid
 graph TD
     subgraph Borda_e_WAN ["Camada de Borda, Voz e Tráfego Crítico"]
-        CME[Roteador de Borda/CME - Cisco 3900]
+        CME200[Roteador de Borda/CME - Cisco 3900]
         MPLS[Nuvem MPLS / WAN Operacional]
-        CME <--> MPLS
+        CME200 <--> MPLS
     end
 
     subgraph Core_da_Rede ["Camada Core L3"]
-        CORE[Switch CORE - Cisco Catalyst 9200L]
-        CME <--> |Roteamento e ACLs| CORE
+        CORE199[Switch CORE - Cisco Catalyst 9200L]
+        CME200 <--> |Roteamento e ACLs| CORE199
     end
 
     subgraph Distribuicao ["Camada de Distribuição L2"]
-        SW_DIST1[Switch Distribuição A - Catalyst 3850]
-        SW_DIST2[Switch Distribuição B - Catalyst 3850]
-        CORE <--> |EtherChannel LACP 2Gbps| SW_DIST1
-        CORE <--> |EtherChannel LACP 2Gbps| SW_DIST2
-        SW_DIST1 <--> |Redundância física| SW_DIST2
+        SW151[Switch Distribuição A - Catalyst 3850]
+        SW221[Switch Distribuição B - Catalyst 3850]
+        CORE199 <--> |EtherChannel LACP 2Gbps| SW151
+        CORE199 <--> |EtherChannel LACP 2Gbps| SW221
+        SW151 <--> |Redundância física| SW221
     end
 
     subgraph Acesso ["Camada de Acesso L2"]
-        SW_ACC1[Switch Acesso 01]
-        SW_ACC2[Switch Acesso 02]
-        SW_ACC3[Switch Acesso ... N]
-        
-        SW_DIST1 <--> |Trunks 802.1Q Redundantes| SW_ACC1
-        SW_DIST1 <--> |Trunks 802.1Q Redundantes| SW_ACC2
-        SW_DIST2 <--> |Trunks 802.1Q Redundantes| SW_ACC3
+        SW203_218[Switch Acesso 01-... N]
+        SW151 <--> |Trunks 802.1Q Redundantes| SW203_218
+        SW221 <--> |Trunks 802.1Q Redundantes| SW203_218
     end
 ```
 
