@@ -10,7 +10,7 @@ Este projeto tem como objetivo realizar a migração e a melhoria completa da in
 
 - **Imagem da Topologia Física de Rede Atual:** A imagem ilustrará a topologia física de redes atual, destacando a configuração existente e os pontos críticos identificados antes da migração.
 
-![Topologia Física da Rede Atual](imagens/TopologiaInicialProjetoGitHub-Page-1.jpg)
+![Topologia Física da Rede Atual](architecture-diagrams/TopologiaInicialProjetoGitHub-Page-1.jpg)
 
 ### Problemas Identificados
 
@@ -24,13 +24,13 @@ Este projeto tem como objetivo realizar a migração e a melhoria completa da in
 
 **Imagem da Camada CORE:** 
 
-![Camada CORE](imagens/Core.png)
+![Camada CORE](architecture-diagrams/Core.png)
 
 ### Problemas Específicos - Camada de DISTRIBUIÇÃO
 
 - **Mistura de Funções entre Camadas de Distribuição e Acesso:** Não há uma distinção clara entre as camadas de Distribuição e Acesso, resultando em uma sobreposição de funções entre os switches. Além disso, a falta de redundância significa que todos os dispositivos dependem de um único switch (SW 221) para acessar redes externas. Para resolver essa situação, a topologia física e lógica será reorganizada.
 
-![Camada de Distribuição e Acesso](imagens/distribuicao-acesso.png)
+![Camada de Distribuição e Acesso](architecture-diagrams/distribuicao-acesso.png)
 
 - **Ausência de Spanning-Tree Adequado:** Não há implementação de um protocolo Spanning-Tree apropriado, o que aumenta o risco de loops na rede e impede a orientação eficiente do tráfego na camada 2.
 - **Falta de Segregação de VLANs:** Não existe segregação de VLANs para sub-redes de gerenciamento e servidores, criando uma vulnerabilidade na segurança da rede.
@@ -53,7 +53,7 @@ Este projeto tem como objetivo realizar a migração e a melhoria completa da in
 
 - Uma imagem será inserida para ilustrar a topologia atual dos servidores, destacando a estrutura de conexão e o layout de distribuição dos principais serviços e recursos.
 
-![Topologia Física de Servidores](imagens/ServersOLD.jpg)
+![Topologia Física de Servidores](architecture-diagrams/ServersOLD.jpg)
 
 ## 3. Design e Projeto da Nova Topologia Física
 
@@ -67,15 +67,15 @@ Realizada a análise dos requisitos e o estudo de viabilização de uma nova top
 - **Preto com Duas Setas:** Virtualização  
 - **Verde com Duas Setas:** Conexões especiais diretas  
 - **Roxo com Duas Setas:** Rede SAN  
-- **Azul com Conexão Serial:** Túnel L2TP Xconnect  
+- **Azul com Conexão Serial:** [Túnel L2TP Xconnect](cisco-ios-configs/README.md#l3-l2tpv3)  
 
-![Nova Topologia Física de Redes](imagens/ProjetoGithub-10-FW-NewNetSV.jpg)
+![Nova Topologia Física de Redes](architecture-diagrams/ProjetoGithub-10-FW-NewNetSV.jpg)
 
 Além desta topologia física da infraestrutura, é de suma importância detalharmos a **Server Cloud** representada na imagem anterior, que é realizada pelo Cluster gerenciado pelo Proxmox.
 
 **Imagem da Nova Topologia de Servidores:**
 
-![Nova Topologia de Servidores](imagens/ServersNew.jpg)
+![Nova Topologia de Servidores](architecture-diagrams/ServersNew.jpg)
 
 ### 3.1 Camada CORE da Topologia
 
@@ -85,19 +85,19 @@ Além disso, a camada CORE desempenha um papel crucial na segurança da informa�
 
 **Imagem da Camada CORE:**
 
-![Camada CORE da Topologia](imagens/NewCore.jpg)
+![Camada CORE da Topologia](architecture-diagrams/NewCore.jpg)
 
 ### 3.2 Camada de DISTRIBUIÇÃO da Topologia
 
-Nesta camada da topologia física, serão estabelecidos links redundantes entre todos os switches de distribuição e entre os switches CORE, utilizando a tecnologia **Etherchannel**. Essa tecnologia permite redundância de link e agregação de link, aumentando a banda de transferência para 2 Gbps entre os switches.
+Nesta camada da topologia física, serão estabelecidos links redundantes entre todos os switches de distribuição e entre os switches CORE, utilizando a tecnologia [Etherchannel](cisco-ios-configs/README.md#l2-etherchannel). Essa tecnologia permite redundância de link e agregação de link, aumentando a banda de transferência para 2 Gbps entre os switches.
 
-Além disso, será necessário implementar o **Spanning-Tree**, uma tecnologia utilizada para evitar loops nos links redundantes e para estabelecer o caminho mais curto para o destino em layer 2. Foi realizada uma análise minuciosa de cada VLAN para definir as topologias lógicas e os caminhos prioritários.
+Além disso, será necessário implementar o [Spanning-Tree](cisco-ios-configs/README.md#l2-stp), uma tecnologia utilizada para evitar loops nos links redundantes e para estabelecer o caminho mais curto para o destino em layer 2. Foi realizada uma análise minuciosa de cada VLAN para definir as topologias lógicas e os caminhos prioritários.
 
-Serão também implementadas tecnologias de segurança da informação, como **Port-Security** para controle dos dispositivos conectados, além de medidas contra **DHCP Snooping**, **Dynamic ARP Inspection**, e outras.
+Serão também implementadas tecnologias de segurança da informação, como [Port-Security](cisco-ios-configs/README.md#l2-portfast) para controle dos dispositivos conectados, além de medidas contra [DHCP Snooping](cisco-ios-configs/README.md#l2-portfast) (consulte [Segurança de Borda L2](cisco-ios-configs/README.md#l2-portfast)), [Dynamic ARP Inspection](cisco-ios-configs/README.md#l2-portfast), e outras.
 
 **Imagem da Camada de DISTRIBUIÇÃO:**
 
-![Camada de DISTRIBUIÇÃO da Topologia](imagens/NewDistribuicao.jpg)
+![Camada de DISTRIBUIÇÃO da Topologia](architecture-diagrams/NewDistribuicao.jpg)
 
 ### 3.3 Camada de ACESSO da Topologia
 
@@ -114,11 +114,11 @@ A camada de acesso é a camada onde são conectados os dispositivos finais. Noss
 
 **Imagem da Camada de ACESSO:**
 
-![Camada de ACESSO da Topologia](imagens/NewAcesso.jpg)
+![Camada de ACESSO da Topologia](architecture-diagrams/NewAcesso.jpg)
 
-Grande parte dos switches de acesso são conectados a pelo menos dois outros switches da camada de distribuição. Dessa forma, caso algum switch de distribuição ou link entre eles se rompa, outro link poderá assumir a função. Para isso, é essencial que o **Spanning-Tree** e o **Etherchannel** estejam corretamente configurados entre esses switches.
+Grande parte dos switches de acesso são conectados a pelo menos dois outros switches da camada de distribuição. Dessa forma, caso algum switch de distribuição ou link entre eles se rompa, outro link poderá assumir a função. Para isso, é essencial que o [Spanning-Tree](cisco-ios-configs/README.md#l2-stp) e o [Etherchannel](cisco-ios-configs/README.md#l2-etherchannel) estejam corretamente configurados entre esses switches.
 
-A conexão entre os switches de acesso e os dispositivos finais é configurada especificamente nas VLANs necessárias, e o **Port-Security** será implementado para controle dos dispositivos conectados em toda a infraestrutura.
+A conexão entre os switches de acesso e os dispositivos finais é configurada especificamente nas VLANs necessárias, e o [Port-Security](cisco-ios-configs/README.md#l2-portfast) será implementado para controle dos dispositivos conectados em toda a infraestrutura.
 
 Para que esta topologia física seja implementada, diversas análises e novas tecnologias deverão ser introduzidas. Estas serão citadas, explicadas e implementadas a seguir.
 
@@ -139,19 +139,19 @@ A implementação será dividida em seis grandes fases:
 
 ### 4.1 CORE da Topologia
 
-O primeiro passo foi alterar a entrega do **MPLS** da operadora para a Sala de Servidores, que funciona como o data center do prédio. Um chamado foi aberto junto à operadora para transportar o rack completo, contendo os equipamentos do MPLS, o roteador da Matriz e o roteador de borda do esquadrão, para essa nova localização.
+O primeiro passo foi alterar a entrega do [MPLS](cisco-ios-configs/README.md#l3-l2tpv3) da operadora para a Sala de Servidores, que funciona como o data center do prédio. Um chamado foi aberto junto à operadora para transportar o rack completo, contendo os equipamentos do MPLS, o roteador da Matriz e o roteador de borda do esquadrão, para essa nova localização.
 
 Foi necessário instalar um novo percurso de fibra óptica, já que não havia conexão prévia com a Sala de Servidores. Com isso, conseguimos centralizar os equipamentos de comunicação e otimizar o gerenciamento da infraestrutura de rede.
 
 **Imagem do Rack do MPLS:**
 
-![Rack do MPLS](imagens/RackMpls.jpg)
+![Rack do MPLS](architecture-diagrams/RackMpls.jpg)
 
-Após essa mudança, foi implementado um firewall para bloquear todo o tráfego não autorizado, conforme as regras de segurança da empresa. Durante a implementação, surgiram desafios complexos, especialmente para liberar a comunicação de áudio via protocolo SIP. Foi necessário um estudo aprofundado dos protocolos envolvidos. No entanto, a equipe de redes e segurança superou as dificuldades, e o sistema foi implementado com sucesso, ficando 100% funcional.
+Após essa mudança, foi implementado um [firewall com Access Lists](cisco-ios-configs/README.md#l3-acls) para bloquear todo o tráfego não autorizado, conforme as regras de segurança da empresa. Durante a implementação, surgiram desafios complexos, especialmente para liberar a comunicação de áudio via protocolo SIP. Foi necessário um estudo aprofundado dos protocolos envolvidos. No entanto, a equipe de redes e segurança superou as dificuldades, e o sistema foi implementado com sucesso, ficando 100% funcional.
 
-Foi implementado um switch Cisco C9200L como CORE da rede para melhorar o desempenho no roteamento interno. O roteamento entre sub-redes foi centralizado nesse switch, que atua como gateway para todas as redes internas. Já o roteamento para redes externas é direcionado ao roteador de borda, responsável por esse tráfego, otimizando a carga de processamento entre os dispositivos.
+Foi implementado um switch Cisco C9200L como CORE da rede para melhorar o desempenho no roteamento interno. O roteamento entre sub-redes foi centralizado nesse switch, que atua como [gateway SVI](cisco-ios-configs/README.md#l3-intervlan) para todas as redes internas. Já o roteamento para redes externas é direcionado ao roteador de borda, responsável por esse tráfego, otimizando a carga de processamento entre os dispositivos.
 
-Além disso, será adicionado um segundo switch Cisco C9200L (em processo de aquisição), formando uma redundância com o primeiro, incluindo a redundância de gateways por meio das tecnologias HSRP e VRRP. Entre os C9200L e os switches da camada de distribuição, será implementada a agregação de links para somar a banda disponível, garantindo também a redundância dos links via EtherChannel.
+Além disso, será adicionado um segundo switch Cisco C9200L (em processo de aquisição), formando uma redundância com o primeiro, incluindo a redundância de gateways por meio das tecnologias HSRP e VRRP. Entre os C9200L e os switches da camada de distribuição, será implementada a agregação de links para somar a banda disponível, garantindo também a redundância dos links via [EtherChannel](cisco-ios-configs/README.md#l2-etherchannel).
 
 Na implementação do switch CORE, foi necessário definir um novo endereçamento IP para todas as sub-redes, garantindo o funcionamento de todos os serviços. A Matriz forneceu a rede 192.168.36.0/22, com 1024 IPs disponíveis. Utilizamos o VLSM para dividir essa rede, resultando na seguinte tabela de endereçamento.
 
@@ -176,7 +176,7 @@ Dessa forma, iremos distribuir os endereços IP de modo que fiquem adequados à 
 
 ### 4.1.b VLANs
 
-Após realizar as análises de cada VLAN necessária à rede, a tabela final de VLANs ficou definida da seguinte forma:
+Após realizar as análises de cada VLAN necessária à rede (consulte o [Plano de Segmentação de VLANs](cisco-ios-configs/README.md#plano-vlans)), a tabela final de VLANs ficou definida da seguinte forma:
 
 | VLAN  | NAME              | VLAN | NAME            |
 |-------|-------------------|------|-----------------|
@@ -191,7 +191,7 @@ Essas VLANs serão configuradas manualmente nos switches, já que a tabela é pe
 
 ### 4.1.c Interfaces SVIs e Roteamento de VLANs
 
-As SVIs são configuradas no Switch CORE para realizar o roteamento entre as VLANs. É importante definir quais VLANs devem se comunicar entre si. Após análise, identificamos que as VLANs 100, 200, 300, 400, 511 e 514 precisam de comunicação mútua. Se for necessário restringir essa comunicação no futuro, isso pode ser feito por meio de ACLs.
+As [SVIs (Switch Virtual Interfaces)](cisco-ios-configs/README.md#l3-intervlan) são configuradas no Switch CORE para realizar o roteamento entre as VLANs. É importante definir quais VLANs devem se comunicar entre si. Após análise, identificamos que as VLANs 100, 200, 300, 400, 511 e 514 precisam de comunicação mútua. Se for necessário restringir essa comunicação no futuro, isso pode ser feito por meio de ACLs.
 
 Configuração das SVIs:
 
@@ -241,12 +241,12 @@ Para permitir que as redes se comuniquem com redes externas (INTRANET e Internet
 - **ip route 0.0.0.0 0.0.0.0 Gi0/0** (rota padrão para a WAN).
 
 **Configurações de voz:**
-- **voice register global:** Configurar IP 192.168.38.126/25 (VOICE).
+- **voice register global:** Configurar IP 192.168.38.126/25 (VOICE) (consulte [Voz sobre IP](cisco-ios-configs/README.md#l2-voice-vlan)).
 - **telephony service secondary:** Configurar IP 192.168.36.200/25 (GERENCIAMENTO).
 
 ### 4.2 Camada de DISTRIBUIÇÃO da Topologia
 
-Nesta camada, foi implementado o EtherChannel entre os switches, agregando duas interfaces gigabit Ethernet por switch, totalizando 2 Gbps de bandwidth e garantindo a redundância dos links.
+Nesta camada, foi implementado o [EtherChannel (Agregação de Links LACP)](cisco-ios-configs/README.md#l2-etherchannel) entre os switches, agregando duas interfaces gigabit Ethernet por switch, totalizando 2 Gbps de bandwidth e garantindo a redundância dos links.
 
 Além disso, essa camada é responsável por interligar, com links redundantes, diferentes redes operacionais, como Fornecedor, Cliente Externo 1 e 2, e a Central de Áudio.
 
@@ -254,11 +254,11 @@ Foi realizada também uma reorganização dos ativos no Rack de Infraestrutura, 
 
 **Imagem do Rack de Infraestrutura:**
 
-![Rack de Infraestrutura](imagens/Rack1.jpg)
+![Rack de Infraestrutura](architecture-diagrams/Rack1.jpg)
 
 ### 4.3 Camada de ACESSO da Topologia
 
-Nessa etapa, cada switch da camada de acesso deverá ser reconfigurado com as VLANs existentes de forma manual (sem VTP), atribuindo o IP e a máscara na interface SVI de gerenciamento. Os links para os switches de distribuição serão configurados como trunk, e os hostnames serão atualizados de acordo com a nova padronização definida em anexo. Além disso, o gateway padrão será ajustado para o novo endereço estabelecido no switch CORE.
+Nessa etapa, cada switch da camada de acesso deverá ser reconfigurado com as [VLANs existentes](cisco-ios-configs/README.md#plano-vlans) de forma manual (sem VTP), atribuindo o IP e a máscara na interface SVI de gerenciamento. Os links para os switches de distribuição serão configurados como [trunk](cisco-ios-configs/README.md#l2-trunking), e os hostnames serão atualizados de acordo com a nova padronização definida em anexo. Além disso, o gateway padrão será ajustado para o novo endereço estabelecido no switch [CORE (SVI)](cisco-ios-configs/README.md#l3-intervlan).
 
 
 ## 5. Status Atual das Implementações
@@ -266,48 +266,48 @@ Nessa etapa, cada switch da camada de acesso deverá ser reconfigurado com as VL
 ### Redes
 
 - **Mudança MPLS:** OK
-- **Nova Topologia Física:** 95%
+- **Nova Topologia Física:** 99%
 - **Endereçamento:** OK
 - **VLAN Nativa:** OK
 - **VLANs:** OK
-- **Trunks:** 95%
+- **Trunks:** 100%
 - **Inter-VLAN Routing:** OK
-- **STP:** 98%
-- **Etherchannel:** 95%
-- **ACLs:** 10%
+- **STP:** 100%
+- **Etherchannel:** 100%
+- **ACLs:** 70%
 
 ### Servidores/Storage
 
-- **Proxmox:** 70% (Cluster pendente)
-- **Netbox:** 90%
-- **Zabbix:** 90%
+- **Proxmox:** 90% (Cluster pendente)
+- **Netbox:** 100%
+- **Zabbix:** 100%
 - **Prometheus:** 100%
 - **InfluxDB:** 100%
-- **Grafana:** 70%
-- **Bacula:** 0%
-- **Web:** 90% (Revisão necessária)
+- **Grafana:** 100%
+- **Proxmox Backup Server:** 60%
+- **Web:** 100%
 - **DNS/DHCP:** 100% (Revisar produção no AD)
-- **Active Directory:** 80% (Migração para novo servidor pendente)
+- **Active Directory:** 100%
 - **WSUS:** 100%
-- **AD (SAMBA):** 0%
+- **AD (SAMBA):** 100%
 - **Syslog:** 0%
-- **TACACSGU:** 30%
+- **TACACSGUI:** 30%
 
 ### Segurança
 
 - **pfSense:** 100%
-- **Layer 2 Security:**
-  - **DHCP Snooping:** 50%
-  - **Dynamic ARP Inspection:** 50%
-  - **Port Security:** 0%
-  - **VLAN Attacks Mitigation:** 50%
+- **Layer 2 Security:** (consulte [Segurança de Borda L2](cisco-ios-configs/README.md#l2-portfast))
+  - **DHCP Snooping:** 100%
+  - **Dynamic ARP Inspection:** 100%
+  - **Port Security:** 0% (Task suspensa pela Alta Direção)
+  - **VLAN Attacks Mitigation:** 100% (consulte [Mitigação Blackhole](cisco-ios-configs/README.md#l2-blackhole))
 - **FW ASA5550:** 0%
 
 ## 6. Próximos Passos
 
-- **Ações Faltantes:** Concluir as pendências relacionadas às ACLs, Bacula, migração do Active Directory, entre outros.
-- **Testes e Validação:** Realizar testes de segurança na camada 2 e validar o script de segurança de VLANs.
-- **Documentação e Publicação:** Finalizar a documentação técnica do projeto e preparar sua publicação no GitHub e LinkedIn.
+- **Ações Faltantes:** Nenhuma
+- **Testes e Validação:** 90%
+- **Documentação e Publicação:** 80% (trabalho contínuo de atualização)
 
 ## Contribuições
 

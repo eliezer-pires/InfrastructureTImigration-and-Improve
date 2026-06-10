@@ -1,1 +1,6 @@
+<<<<<<< HEAD
 cisco-ios-configs/
+=======
+cisco-ios-configs/*.cfg
+cisco-ios-configs/backups
+>>>>>>> 3ea1d51d0e418aaba195a3e941d1f0d1dbe53ca0
