@@ -1,5 +1,7 @@
 # 🌐 Arquitetura e Engenharia de Conectividade (Cisco IOS)
 
+**Justificativa Gerencial:** A modelagem adotada mitigou o fator inversamente proporcional "Técnicos x Tempo" na migração física da STI ao estruturar a rede em camadas, padronizar configurações e distribuir responsabilidades, permitindo que a equipe de técnicos concluísse a migração em menos tempo, reduzindo a carga de trabalho individual.
+
 Este diretório contém a documentação da arquitetura e das soluções técnicas de conectividade implementadas nos ativos de rede (roteadores e switches Cisco) da infraestrutura. 
 
 Com o objetivo de viabilizar a hospedagem pública e segura deste portfólio no GitHub, todos os dados sensíveis foram mascarados utilizando metodologias de **preservação lógica de topologia**.
